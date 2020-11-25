@@ -1,24 +1,35 @@
 package diningphilosophers;
 
+import java.time.Duration;
+
+
 public class ChopStick {
 
     private static int stickCount = 0;
 
     private boolean iAmFree = true;
     private final int myNumber;
+    private long delayTimeOut;
 
     public ChopStick() {
         myNumber = ++stickCount;
+        delayTimeOut = (myNumber);
+
     }
 
-    synchronized public void take() throws InterruptedException {
+    synchronized public boolean take() throws InterruptedException {
         while (!iAmFree) {
-            wait();
+            wait(delayTimeOut*1000); // Wait notify OR timeout 
+            if( !iAmFree ) { // La baguette n'est toujours pas libre
+                System.out.println("Stick " + myNumber + " is not Free");
+                return false; 
+            }
         }
         // assert iAmFree;
         iAmFree = false;
         System.out.println("Stick " + myNumber + " Taken");
         // Pas utile de faire notifyAll ici, personne n'attend qu'elle soit occupée
+        return true;
     }
 
     synchronized public void release() {
