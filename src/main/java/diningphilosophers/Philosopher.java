@@ -25,8 +25,8 @@ public class Philosopher
         while (running) {
             try {
                 think();
-                if( myLeftStick.take() ) {
-                    if ( myRightStick.take() ) {
+                if( myLeftStick.take(DELAY) ) {
+                    if ( myRightStick.take(DELAY) ) {
                         eat();
                         myLeftStick.release();
                         myRightStick.release();

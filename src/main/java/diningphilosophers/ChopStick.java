@@ -15,17 +15,15 @@ public class ChopStick {
     private final int myNumber;
     
     private final Lock verrou = new ReentrantLock();
-    //private final Condition prise = verrou.newCondition();
-    private final Condition disponible = verrou.newCondition();
-    
+
     
     public ChopStick() {
         myNumber = ++stickCount;
     }
 
-    public boolean take() throws InterruptedException {
+    public boolean take(int DELAY) throws InterruptedException {
         /* Try to take during 1 second */
-        if( verrou.tryLock(1, TimeUnit.SECONDS)) {
+        if( verrou.tryLock(DELAY, TimeUnit.MILLISECONDS)) {
             System.out.println("Stick " + myNumber + " taken");
             return true;
         }
@@ -34,7 +32,7 @@ public class ChopStick {
 
     public void release() {
         /* Unlock the stick */
-        System.out.println("Stick " + myNumber + " Released");
+        System.out.println("Stick " + myNumber + " released");
         verrou.unlock();
     }
 
